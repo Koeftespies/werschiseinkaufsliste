@@ -51,7 +51,7 @@
         const userName = document.getElementById("userName")
         
         form.addEventListener('submit', (event) => {
-            if(userName.inputValue != "" && messageInput.inputValue != ""){
+            if(userName.value != "" && messageInput.value != ""){
              event.preventDefault();
              
              const messageInput = document.getElementById('message')
