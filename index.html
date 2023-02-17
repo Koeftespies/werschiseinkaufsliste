@@ -48,12 +48,23 @@
 
         // Load existing messages from the database and update the message list
         const messageList = document.getElementById('message-list');
-        db.ref('\messages').on('child_added', (snapshot) => {
+        db.ref('/messages').on('child_added', (snapshot) => {
             const message = snapshot.val();
             const listItem = document.createElement('li');
             listItem.innerText = message;
             messageList.appendChild(listItem);
         });
+        
+        db.ref('/messages').once('value')
+         .then((snapshot) => {
+           const data = snapshot.val();
+           console.log(data);
+         })
+         .catch((error) => {
+           console.error(error);
+         });
+        console.log(db);
+
     </script>
 
 </body>
