@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Firebase Example</title>
+</head>
+<body>
+
+    <h1>Firebase Example</h1>
+
+    <form>
+        <label for="message">Enter a message:</label>
+        <input type="text" id="message" name="message">
+        <button type="submit" id="submit">Submit</button>
+    </form>
+
+    <div id="messages">
+        <h2>Messages:</h2>
+        <ul id="message-list"></ul>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js"></script>
+
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+           apiKey: "AIzaSyDObJ86Sn6kYPAFGbbsC5XlP_jB6U6Dhi8",
+    authDomain: "werschiseinkaufsliste.firebaseapp.com",
+    projectId: "werschiseinkaufsliste",
+    storageBucket: "werschiseinkaufsliste.appspot.com",
+    messagingSenderId: "858218165338",
+    appId: "1:858218165338:web:fb3c2a539d154d9f2ed463",
+    measurementId: "G-91132G92CM" ,
+    databaseURL: "https://werschiseinkaufsliste-default-rtdb.firebaseio.com/"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Add a new message to the database when the form is submitted
+        const form = document.querySelector('form');
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const messageInput = document.getElementById('message');
+            const message = messageInput.value;
+            db.ref('messages').push(message);
+            messageInput.value = '';
+        });
+
+        // Load existing messages from the database and update the message list
+        const messageList = document.getElementById('message-list');
+        db.ref('messages').on('child_added', (snapshot) => {
+            const message = snapshot.val();
+            const listItem = document.createElement('li');
+            listItem.innerText = message;
+            messageList.appendChild(listItem);
+        });
+    </script>
+
+</body>
+</html>
