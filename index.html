@@ -9,6 +9,7 @@
 
     <form>
         <label for="message">Papi kauf:</label>
+        <input type="text" id="userName">
         <input type="text" id="message" name="message">
         <button type="submit" id="submit">Bestellung aufgeben</button>
     </form>
@@ -37,25 +38,29 @@
 
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
-
+  import {getDatabase,set,get,update,remove,ref,child} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"
+  const db = getDatabase();
+        
         // Add a new message to the database when the form is submitted
         const form = document.querySelector('form');
+        const messageInput = document.getElementById('message')
+        const userName = document.getElementById("userName")
         form.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const messageInput = document.getElementById('message');
-            const message = messageInput.value;
-            db.ref('/messages').push(message);
-            messageInput.value = '';
+            if(userName.inputValue != "" && messageInput.inputValue != ""){
+             event.preventDefault();
+             const messageInput = document.getElementById('message')
+             const userName = document.getElementById("userName")
+             set(ref(db, "Einkaufsliste",{
+                Item: messageInput.inputValue,
+                Author: userName.inputValue
+             })
+            else{
+                  alert("Beide Felder ausfüllen!")
+                 }
+            }
         });
 
-        // Load existing messages from the database and update the message list
-        const messageList = document.getElementById('message-list');
-        db.ref('/messages').on('child_added', (snapshot) => {
-            const message = snapshot.val();
-            const listItem = document.createElement('li');
-            listItem.innerText = message;
-            messageList.appendChild(listItem);
-        });
+        
         
         
 
