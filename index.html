@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,13 +24,13 @@
         <ul id="message-list"></ul>
     </div>
 
-
     <script type="module">
-        / Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-  
- 
-  const firebaseConfig = {
+        // Import the Firebase libraries
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getDatabase, set, ref } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+
+        // Configure the Firebase app
+         const firebaseConfig = {
     apiKey: "AIzaSyDObJ86Sn6kYPAFGbbsC5XlP_jB6U6Dhi8",
     authDomain: "werschiseinkaufsliste.firebaseapp.com",
     databaseURL: "https://werschiseinkaufsliste-default-rtdb.firebaseio.com",
@@ -40,51 +41,31 @@
     measurementId: "G-91132G92CM"
   };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  import {getDatabase,set,get,update,remove,ref,child} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"
-  const db = getDatabase();
-        
-        // Add a new message to the database when the form is submitted
+        const app = initializeApp(firebaseConfig);
+
+        // Get a reference to the Firebase database
+        const db = getDatabase();
+
+        // Handle the form submission
         const form = document.querySelector('form');
         const messageInput = document.getElementById('message')
         const userName = document.getElementById("userName")
-        
         form.addEventListener('submit', (event) => {
-            /*if(userName.value != "" && messageInput.value != ""){
-             event.preventDefault();
-             
-             const messageInput = document.getElementById('message')
-             const userName = document.getElementById("userName")
-             
-             set(ref(db, "Einkaufsliste/" + userName.value),{
-                Item: messageInput.value,
-                Author: userName.value
-             })
-             .then(() => {
-               alert(messageInput.value + " erfolgreich zur Einkaufsliste hinzugefügt!")
-             })
-             .catch((err) => {
-                alert("Ups! Es ist ein Fehler aufgetreten: " + err)
-             })
-             
-             }
-             
-            else{
-                  alert("Beide Felder ausfüllen!")
-                 }*/
-            set(ref(db,"Test"),{
-                Test: "pls work",
-            
-            })
-            
+            event.preventDefault();
+            if (userName.value && messageInput.value) {
+                set(ref(db, "Einkaufsliste/" + userName.value), {
+                    Item: messageInput.value,
+                    Author: userName.value
+                }).then(() => {
+                    alert(messageInput.value + " erfolgreich zur Einkaufsliste hinzugefügt!")
+                }).catch((err) => {
+                    alert("Ups! Es ist ein Fehler aufgetreten: " + err)
+                });
+            } else {
+                alert("Beide Felder ausfüllen!")
+            }
         });
-
-        
-        
-        
-
     </script>
-
 </body>
 </html>
+
