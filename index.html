@@ -57,7 +57,7 @@
              const messageInput = document.getElementById('message')
              const userName = document.getElementById("userName")
              
-             set(ref(db, "Einkaufsliste" + userName.value,{
+             set(ref(db, "Einkaufsliste/" + userName.value,{
                 Item: messageInput.value,
                 Author: userName.value
              })
