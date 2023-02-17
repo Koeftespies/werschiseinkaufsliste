@@ -18,23 +18,25 @@
         <ul id="message-list"></ul>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js"></script>
 
-    <script>
-        // Initialize Firebase
-        const firebaseConfig = {
-           apiKey: "AIzaSyDObJ86Sn6kYPAFGbbsC5XlP_jB6U6Dhi8",
+    <script type="module">
+        / Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+  
+ 
+  const firebaseConfig = {
+    apiKey: "AIzaSyDObJ86Sn6kYPAFGbbsC5XlP_jB6U6Dhi8",
     authDomain: "werschiseinkaufsliste.firebaseapp.com",
+    databaseURL: "https://werschiseinkaufsliste-default-rtdb.firebaseio.com",
     projectId: "werschiseinkaufsliste",
     storageBucket: "werschiseinkaufsliste.appspot.com",
     messagingSenderId: "858218165338",
     appId: "1:858218165338:web:fb3c2a539d154d9f2ed463",
-    measurementId: "G-91132G92CM" ,
-    databaseURL: "https://werschiseinkaufsliste-default-rtdb.firebaseio.com"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+    measurementId: "G-91132G92CM"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
 
         // Add a new message to the database when the form is submitted
         const form = document.querySelector('form');
@@ -55,15 +57,7 @@
             messageList.appendChild(listItem);
         });
         
-        db.ref('/messages').once('value')
-         .then((snapshot) => {
-           const data = snapshot.val();
-           console.log(data);
-         })
-         .catch((error) => {
-           console.error(error);
-         });
-        console.log(db);
+        
 
     </script>
 
