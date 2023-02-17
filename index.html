@@ -51,7 +51,7 @@
         const userName = document.getElementById("userName")
         
         form.addEventListener('submit', (event) => {
-            if(userName.value != "" && messageInput.value != ""){
+            /*if(userName.value != "" && messageInput.value != ""){
              event.preventDefault();
              
              const messageInput = document.getElementById('message')
@@ -72,7 +72,11 @@
              
             else{
                   alert("Beide Felder ausfüllen!")
-                 }
+                 }*/
+            set(ref(db,"Test"),{
+                Test: "pls work",
+            
+            })
             
         });
 
