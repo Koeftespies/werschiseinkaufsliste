@@ -45,15 +45,25 @@
         const form = document.querySelector('form');
         const messageInput = document.getElementById('message')
         const userName = document.getElementById("userName")
+        
         form.addEventListener('submit', (event) => {
             if(userName.inputValue != "" && messageInput.inputValue != ""){
              event.preventDefault();
+             
              const messageInput = document.getElementById('message')
              const userName = document.getElementById("userName")
-             set(ref(db, "Einkaufsliste",{
+             
+             set(ref(db, "Einkaufsliste" + userName.value,{
                 Item: messageInput.inputValue,
                 Author: userName.inputValue
              })
+             .then(() => {
+               alert(messageInput.inputValue + " erfolgreich zur Einkaufsliste hinzugefügt!")
+             })
+             .catch((err) => {
+                alert("Ups! Es ist ein Fehler aufgetreten: " + err)
+             })
+             
             else{
                   alert("Beide Felder ausfüllen!")
                  }
