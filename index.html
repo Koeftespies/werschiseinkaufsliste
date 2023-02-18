@@ -127,34 +127,44 @@
         form.addEventListener('submit', (event) => {
     if (userName.value != "" && messageInput.value != "") {
         event.preventDefault();
-        const userRef = ref(db, "Einkaufsliste/" + userName.value);
-        get(userRef).then((snapshot) => {
+         
+        // Check if user already has an entry
+        const listRef = ref(db, 'Einkaufsliste');
+        const queryRef = query(listRef, orderByChild('Author'), equalTo(userName.value));
+        
+        get(queryRef).then((snapshot) => {
             if (snapshot.exists()) {
-                // user already exists in the database
-                const existingItem = snapshot.val().Item;
-                const newItem = messageInput.value;
-                const mergedItem = `${existingItem}, ${newItem}`;
-                update(userRef, { Item: mergedItem });
-                messageList.querySelector(`li[data-id="${userName.value}"]`).textContent = `${userName.value}: ${mergedItem}`;
+                // User already has an entry, update the existing entry
+                snapshot.forEach((childSnapshot) => {
+                    const childKey = childSnapshot.key;
+                    update(ref(db, 'Einkaufsliste/' + childKey), {
+                        Item: messageInput.value,
+                        Author: userName.value
+                    }).then(() => {
+                        alert(messageInput.value + " erfolgreich zur Einkaufsliste hinzugefügt!");
+                    }).catch((err) => {
+                        alert("Ups! Es ist ein Fehler aufgetreten: " + err);
+                    });
+                });
             } else {
-                // user is new, create a new entry
-                set(userRef, {
+                // User does not have an entry, add a new entry
+                push(ref(db, "Einkaufsliste"), {
                     Item: messageInput.value,
                     Author: userName.value
+                }).then(() => {
+                    alert(messageInput.value + " erfolgreich zur Einkaufsliste hinzugefügt!");
+                }).catch((err) => {
+                    alert("Ups! Es ist ein Fehler aufgetreten: " + err);
                 });
-                const li = document.createElement('li');
-                li.dataset.id = userName.value;
-                li.textContent = `${userName.value}: ${messageInput.value}`;
-                messageList.appendChild(li);
             }
-            alert(messageInput.value + " erfolgreich zur Einkaufsliste hinzugefügt!");
-        }).catch((err) => {
-            alert("Ups! Es ist ein Fehler aufgetreten: " + err);
+        }).catch((error) => {
+            console.error(error);
         });
     } else {
         alert("Beide Felder ausfüllen!");
     }
 });
+
 
         
         const clearButton = document.getElementById('clear');
