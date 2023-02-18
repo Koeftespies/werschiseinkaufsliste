@@ -123,12 +123,14 @@
         const form = document.querySelector('form');
         const messageInput = document.getElementById('message');
         const userName = document.getElementById("userName");
+        const entries = 0;
         
          form.addEventListener('submit', (event) => {
+            entries++;
             if (userName.value != "" && messageInput.value != "") {
                 event.preventDefault();
              
-                set(ref(db, "Einkaufsliste/" + userName.value), {
+                set(ref(db, "Einkaufsliste/" + userName.value + entries), {
                     Item: messageInput.value,
                     Author: userName.value
                 })
