@@ -24,76 +24,28 @@
         <ul id="message-list"></ul>
     </div>
 
+
     <script type="module">
-        // Import the Firebase libraries
+        // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
         import { getDatabase, set, get, update, remove, ref, child, onValue } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
-        // Configure the Firebase app
-         const firebaseConfig = {
-    apiKey: "AIzaSyDObJ86Sn6kYPAFGbbsC5XlP_jB6U6Dhi8",
-    authDomain: "werschiseinkaufsliste.firebaseapp.com",
-    databaseURL: "https://werschiseinkaufsliste-default-rtdb.firebaseio.com",
-    projectId: "werschiseinkaufsliste",
-    storageBucket: "werschiseinkaufsliste.appspot.com",
-    messagingSenderId: "858218165338",
-    appId: "1:858218165338:web:fb3c2a539d154d9f2ed463",
-    measurementId: "G-91132G92CM"
-  };
+        const firebaseConfig = {
+            apiKey: "your-api-key",
+            authDomain: "your-auth-domain",
+            databaseURL: "your-database-url",
+            projectId: "your-project-id",
+            storageBucket: "your-storage-bucket",
+            messagingSenderId: "your-messaging-sender-id",
+            appId: "your-app-id",
+            measurementId: "your-measurement-id"
+        };
 
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
-
-        // Get a reference to the Firebase database
         const db = getDatabase();
 
-        // Handle the form submission
-        const form = document.querySelector('form');
-        const messageInput = document.getElementById('message')
-        const userName = document.getElementById("userName")
-        
-        form.addEventListener('submit', (event) => {
-  event.preventDefault();
-
-  const messageInput = document.getElementById('message');
-  const userName = document.getElementById('userName');
-
-  if (userName.value === '' || messageInput.value === '') {
-    alert('Beide Felder ausfüllen!');
-    return;
-  }
-
-  const authorRef = ref(db, `Einkaufsliste/${userName.value}`);
-
-  // Check if the author already has an entry in the database
-  get(authorRef).then((snapshot) => {
-    if (snapshot.exists()) {
-      // Update the existing entry
-      update(authorRef, {
-        [messageInput.value]: true
-      })
-      .then(() => {
-        alert(`${messageInput.value} erfolgreich zur Einkaufsliste hinzugefügt!`);
-      })
-      .catch((err) => {
-        alert(`Ups! Es ist ein Fehler aufgetreten: ${err}`);
-      });
-    } else {
-      // Create a new entry with the item as the first child
-      set(authorRef, {
-        [messageInput.value]: true
-      })
-      .then(() => {
-        alert(`${messageInput.value} erfolgreich zur Einkaufsliste hinzugefügt!`);
-      })
-      .catch((err) => {
-        alert(`Ups! Es ist ein Fehler aufgetreten: ${err}`);
-      });
-    }
-  });
-});
-
-
-  
+        // Retrieve all messages from the database and add them to the message list
         const messageList = document.getElementById('message-list');
 
         onValue(ref(db, "Einkaufsliste"), (snapshot) => {
@@ -106,7 +58,30 @@
                 messageList.appendChild(li);
             });
         });
+
+        // Add a new message to the database when the form is submitted
+        const form = document.querySelector('form');
+        const messageInput = document.getElementById('message');
+        const userName = document.getElementById("userName");
+        
+        form.addEventListener('submit', (event) => {
+            if (userName.value != "" && messageInput.value != "") {
+                event.preventDefault();
+             
+                set(ref(db, "Einkaufsliste/" + userName.value), {
+                    Item: messageInput.value,
+                    Author: userName.value
+                })
+                .then(() => {
+                    alert(messageInput.value + " erfolgreich zur Einkaufsliste hinzugefügt!")
+                })
+                .catch((err) => {
+                    alert("Ups! Es ist ein Fehler aufgetreten: " + err)
+                });
+            } else {
+                alert("Beide Felder ausfüllen!")
+            }
+        });
     </script>
 </body>
 </html>
-
