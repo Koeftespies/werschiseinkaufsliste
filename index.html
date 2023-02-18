@@ -125,46 +125,23 @@
         const userName = document.getElementById("userName");
         
         form.addEventListener('submit', (event) => {
-    if (userName.value != "" && messageInput.value != "") {
-        event.preventDefault();
-         
-        // Check if user already has an entry
-        const listRef = ref(db, 'Einkaufsliste');
-        const queryRef = query(listRef, orderByChild('Author'), equalTo(userName.value));
-        
-        get(queryRef).then((snapshot) => {
-            if (snapshot.exists()) {
-                // User already has an entry, update the existing entry
-                snapshot.forEach((childSnapshot) => {
-                    const childKey = childSnapshot.key;
-                    update(ref(db, 'Einkaufsliste/' + childKey), {
-                        Item: messageInput.value,
-                        Author: userName.value
-                    }).then(() => {
-                        alert(messageInput.value + " erfolgreich zur Einkaufsliste hinzugefügt!");
-                    }).catch((err) => {
-                        alert("Ups! Es ist ein Fehler aufgetreten: " + err);
-                    });
-                });
-            } else {
-                // User does not have an entry, add a new entry
-                push(ref(db, "Einkaufsliste"), {
+            if (userName.value != "" && messageInput.value != "") {
+                event.preventDefault();
+             
+                set(ref(db, "Einkaufsliste/" + userName.value), {
                     Item: messageInput.value,
                     Author: userName.value
-                }).then(() => {
-                    alert(messageInput.value + " erfolgreich zur Einkaufsliste hinzugefügt!");
-                }).catch((err) => {
-                    alert("Ups! Es ist ein Fehler aufgetreten: " + err);
+                })
+                .then(() => {
+                    alert(messageInput.value + " erfolgreich zur Einkaufsliste hinzugefügt!")
+                })
+                .catch((err) => {
+                    alert("Ups! Es ist ein Fehler aufgetreten: " + err)
                 });
-            }
-        }).catch((error) => {
-            console.error(error);
+            } else {
+                alert("Beide Felder ausfüllen)
+                      }
         });
-    } else {
-        alert("Beide Felder ausfüllen!");
-    }
-});
-
 
         
         const clearButton = document.getElementById('clear');
