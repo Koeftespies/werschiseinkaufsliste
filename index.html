@@ -135,7 +135,7 @@
                   alert(error)
                 })
  
-
+              if(typeof prefItem === "string"){
                 set(ref(db, "Einkaufsliste/" + userName.value), {
                     Item: prefItem + "," + messageInput.value,
                     Author: userName.value
@@ -147,9 +147,25 @@
                 .catch((err) => {
                     alert("Ups! Es ist ein Fehler aufgetreten: " + err)
                 });
-            } else {
+              }
+              else{
+                 set(ref(db, "Einkaufsliste/" + userName.value), {
+                    Item:   messageInput.value,
+                    Author: userName.value
+                })
+                .then(() => {
+                    alert(messageInput.value + " erfolgreich zur Einkaufsliste hinzugefügt!")
+                    messageInput.value = "";
+                })
+                .catch((err) => {
+                    alert("Ups! Es ist ein Fehler aufgetreten: " + err)
+                });
+              }
+            } 
+              else 
+              {
                 alert("Beide Felder ausfüllen")
-                      }
+               }
         });
 
         
