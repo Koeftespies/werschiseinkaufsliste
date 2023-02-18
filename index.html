@@ -131,7 +131,7 @@
                 const prefRef = ref(db,"Einkaufsliste/" + userName.value)
                 get(prefRef).then((snapshot) => {
                    const prefItem = snapshot.val().Item;               
-                }
+                })
  
 
                 set(ref(db, "Einkaufsliste/" + userName.value), {
