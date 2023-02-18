@@ -104,7 +104,7 @@
                 const key = childSnapshot.key;
                 const li = document.createElement('li');
                 const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'x';
+                deleteButton.textContent = '&#xF5DE;';
                 deleteButton.onclick = () => {
                     remove(ref(db, "Einkaufsliste/" + key)).then(() => {
                         alert(`${author}: ${item} erfolgreich aus der Einkaufsliste gelöscht!`);
