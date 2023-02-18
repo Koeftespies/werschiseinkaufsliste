@@ -107,6 +107,7 @@
                 const deleteButton = document.createElement('button');
                 deleteButton.textContent = 'x';
                 deleteButton.classList.add('button', 'is-danger', 'is-outlined', 'is-small', 'delete-button');
+                deleteButton.style.font-size = "8px"
                 deleteButton.onclick = () => {
                     remove(ref(db, "Einkaufsliste/" + key)).then(() => {
                         alert(`${author}: ${item} erfolgreich aus der Einkaufsliste gelöscht!`);
