@@ -127,9 +127,15 @@
         form.addEventListener('submit', (event) => {
             if (userName.value != "" && messageInput.value != "") {
                 event.preventDefault();
-             
+                
+                const prefRef = ref(db,"Einkaufsliste/" + userName.value)
+                get(prefRef).then((snapshot) => {
+                   const prefItem = snapshot.val().Item;               
+                }
+ 
+
                 set(ref(db, "Einkaufsliste/" + userName.value), {
-                    Item: messageInput.value,
+                    Item: prefItem + "," + messageInput.value,
                     Author: userName.value
                 })
                 .then(() => {
