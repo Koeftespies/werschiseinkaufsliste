@@ -52,45 +52,42 @@
         const userName = document.getElementById("userName")
         
         form.addEventListener('submit', (event) => {
-  event.preventDefault();
-
-  const messageInput = document.getElementById('message');
-  const userName = document.getElementById('userName');
-
-  if (userName.value === '' || messageInput.value === '') {
-    alert('Beide Felder ausfüllen!');
-    return;
-  }
-
-  const authorRef = ref(db, `Einkaufsliste/${userName.value}`);
-
-  // Check if the author already has an entry in the database
-  get(authorRef).then((snapshot) => {
-    if (snapshot.exists()) {
-      // Update the existing entry
-      update(authorRef, {
-        [messageInput.value]: true
-      })
-      .then(() => {
-        alert(`${messageInput.value} erfolgreich zur Einkaufsliste hinzugefügt!`);
-      })
-      .catch((err) => {
-        alert(`Ups! Es ist ein Fehler aufgetreten: ${err}`);
-      });
+    event.preventDefault();
+    
+    const message = messageInput.value;
+    const author = userName.value;
+    
+    if (message !== '' && author !== '') {
+        const userRef = child(ref(db), "Einkaufsliste/" + author);
+        get(userRef).then((snapshot) => {
+            let itemList = '';
+            if (snapshot.exists()) {
+                const userData = snapshot.val();
+                itemList = userData.Item;
+                if (itemList !== '') {
+                    itemList += ';';
+                }
+            }
+            itemList += message;
+            const updates = {};
+            updates['Einkaufsliste/' + author + '/Item'] = itemList;
+            set(db, updates).then(() => {
+                alert(message + " erfolgreich zur Einkaufsliste hinzugefügt!");
+                messageInput.value = '';
+                userName.value = '';
+            }).catch((error) => {
+                console.error(error);
+                alert("Ups! Es ist ein Fehler aufgetreten: " + error.message);
+            });
+        }).catch((error) => {
+            console.error(error);
+            alert("Ups! Es ist ein Fehler aufgetreten: " + error.message);
+        });
     } else {
-      // Create a new entry with the item as the first child
-      set(authorRef, {
-        [messageInput.value]: true
-      })
-      .then(() => {
-        alert(`${messageInput.value} erfolgreich zur Einkaufsliste hinzugefügt!`);
-      })
-      .catch((err) => {
-        alert(`Ups! Es ist ein Fehler aufgetreten: ${err}`);
-      });
+        alert("Beide Felder ausfüllen!");
     }
-  });
 });
+
 
   
         const messageList = document.getElementById('message-list');
