@@ -27,7 +27,7 @@
     <script type="module">
         // Import the Firebase libraries
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-        import { getDatabase, set, ref } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+        import { getDatabase, set, get, update, remove, ref, child, onValue } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
         // Configure the Firebase app
          const firebaseConfig = {
@@ -64,6 +64,16 @@
             } else {
                 alert("Beide Felder ausfüllen!")
             }
+        });
+        onValue(ref(db, "Einkaufsliste"), (snapshot) => {
+            messageList.innerHTML = '';
+            snapshot.forEach((childSnapshot) => {
+                const item = childSnapshot.val().Item;
+                const author = childSnapshot.val().Author;
+                const li = document.createElement('li');
+                li.textContent = `${author}: ${item}`;
+                messageList.appendChild(li);
+            });
         });
     </script>
 </body>
