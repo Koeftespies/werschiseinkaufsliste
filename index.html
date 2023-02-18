@@ -65,6 +65,8 @@
                 alert("Beide Felder ausfüllen!")
             }
         });
+        const messageList = document.getElementById('message-list');
+
         onValue(ref(db, "Einkaufsliste"), (snapshot) => {
             messageList.innerHTML = '';
             snapshot.forEach((childSnapshot) => {
