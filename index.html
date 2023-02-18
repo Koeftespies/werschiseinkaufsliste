@@ -125,23 +125,37 @@
         const userName = document.getElementById("userName");
         
         form.addEventListener('submit', (event) => {
-            if (userName.value != "" && messageInput.value != "") {
-                event.preventDefault();
-             
-                set(ref(db, "Einkaufsliste/" + userName.value), {
+    if (userName.value != "" && messageInput.value != "") {
+        event.preventDefault();
+        const userRef = ref(db, "Einkaufsliste/" + userName.value);
+        get(userRef).then((snapshot) => {
+            if (snapshot.exists()) {
+                // user already exists in the database
+                const existingItem = snapshot.val().Item;
+                const newItem = messageInput.value;
+                const mergedItem = `${existingItem}, ${newItem}`;
+                update(userRef, { Item: mergedItem });
+                messageList.querySelector(`li[data-id="${userName.value}"]`).textContent = `${userName.value}: ${mergedItem}`;
+            } else {
+                // user is new, create a new entry
+                set(userRef, {
                     Item: messageInput.value,
                     Author: userName.value
-                })
-                .then(() => {
-                    alert(messageInput.value + " erfolgreich zur Einkaufsliste hinzugefügt!")
-                })
-                .catch((err) => {
-                    alert("Ups! Es ist ein Fehler aufgetreten: " + err)
                 });
-            } else {
-                alert("Beide Felder ausfüllen!")
+                const li = document.createElement('li');
+                li.dataset.id = userName.value;
+                li.textContent = `${userName.value}: ${messageInput.value}`;
+                messageList.appendChild(li);
             }
+            alert(messageInput.value + " erfolgreich zur Einkaufsliste hinzugefügt!");
+        }).catch((err) => {
+            alert("Ups! Es ist ein Fehler aufgetreten: " + err);
         });
+    } else {
+        alert("Beide Felder ausfüllen!");
+    }
+});
+
         
         const clearButton = document.getElementById('clear');
         
