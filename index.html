@@ -23,6 +23,8 @@
         <h2>Einkaufsliste:</h2>
         <ul id="message-list"></ul>
     </div>
+    
+    <button type="button" id="clear">Einkaufsliste leeren</button>
 
 
     <script type="module">
@@ -82,6 +84,17 @@
                 alert("Beide Felder ausfüllen!")
             }
         });
+        
+        const clearButton = document.getElementById('clear');
+        
+        clearButton.onclick = () {
+          messageList.innerHTML = ''
+          const listRef = ref(db, 'Einkaufsliste')
+          remove(listRef)
+  
+          
+        }
+
     </script>
 </body>
 </html>
