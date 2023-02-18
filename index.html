@@ -1,29 +1,67 @@
-
 <!DOCTYPE html>
 <html>
 <head>
     <title>Werschis Einkaufsliste</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <style>
+        /* center everything horizontally */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        /* add margin and padding to main container */
+        .container {
+            margin: 2rem;
+            padding: 2rem;
+            max-width: 600px;
+        }
+        /* align submit and clear buttons */
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+        /* style the list items */
+        .message-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .message-item button {
+            margin-left: 0.5rem;
+        }
+    </style>
 </head>
 <body>
 
-    <h1>Unsere Einkaufsliste</h1>
+    <div class="container">
 
-    <form>
-        
-        
-        <input type="text" id="message" name="message" value="Bestellung">
-       
-        <input type="text" id="userName" value="Name">
-        
-        <button type="submit" id="submit">Bestellung aufgeben</button>
-    </form>
-    
-    <button type="button" id="clear">Einkaufsliste leeren</button>
-    
-    <div id="messages">
-        <h2>Einkaufsliste:</h2>
-        <ul id="message-list"></ul>
+        <h1 class="title is-1">Unsere Einkaufsliste</h1>
+
+        <form>
+            <div class="field is-grouped">
+                <div class="control is-expanded">
+                    <input class="input" type="text" id="message" name="message" placeholder="Papi kauf...">
+                </div>
+                <div class="control">
+                    <input class="input" type="text" id="userName" placeholder="Dein Name">
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="button is-primary" type="submit" id="submit">Bestellung aufgeben</button>
+                <button class="button is-danger" type="button" id="clear">Einkaufsliste leeren</button>
+            </div>
+        </form>
+
+        <div id="messages">
+            <h2 class="subtitle is-2">Einkaufsliste:</h2>
+            <ul id="message-list"></ul>
+        </div>
+
     </div>
     
     
