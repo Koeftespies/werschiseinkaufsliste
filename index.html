@@ -89,13 +89,12 @@
         
         const clearButton = document.getElementById('clear');
         
-        clearButton.onclick = () {
-          messageList.innerHTML = ''
-          const listRef = ref(db, 'Einkaufsliste')
-          remove(listRef)
-  
-          
-        }
+        clearButton.onclick = function() {
+  messageList.innerHTML = ''
+  const listRef = ref(db, 'Einkaufsliste')
+  remove(listRef)
+};
+
 
     </script>
 </body>
