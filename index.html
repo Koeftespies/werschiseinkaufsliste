@@ -57,8 +57,17 @@
             snapshot.forEach((childSnapshot) => {
                 const item = childSnapshot.val().Item;
                 const author = childSnapshot.val().Author;
+                const key = childSnapshot.key;
                 const li = document.createElement('li');
-                li.textContent = `${author}: ${item}`;
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'x';
+                deleteButton.onclick = () => {
+                    remove(ref(db, "Einkaufsliste/" + key)).then(() => {
+                        alert(`${author}: ${item} erfolgreich aus der Einkaufsliste gelöscht!`);
+                    });
+                };
+                li.textContent = `${author}: ${item} `;
+                li.appendChild(deleteButton);
                 messageList.appendChild(li);
             });
         });
