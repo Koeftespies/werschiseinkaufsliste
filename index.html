@@ -103,7 +103,11 @@
                 const item = childSnapshot.val().Item;
                 const author = childSnapshot.val().Author;
                 const key = childSnapshot.key;
+                const imgUrl = childSnapshot.val().Image;
+                const img = document.createElement('img');
+                img.src = imgUrl;
                 const li = document.createElement('li');
+                li.appendChild(img);
                 const deleteButton = document.createElement('button');
                 deleteButton.textContent = 'x';
                 deleteButton.classList.add('button', 'is-danger', 'is-outlined', 'is-small', 'delete-button');
@@ -125,31 +129,29 @@
         const userName = document.getElementById("userName");
         var entries = 0;
         
-        async function getIcon(searchTerm) {
-  const apiKey = 'E4v5LJtEiwo4o1m84XxHjCy3BSCDsUWHdFRr7FDIr3ExOBzYIBZqhMhMQO2TgAXK'; // replace with your actual API key
-  const apiUrl = `https://api.iconfinder.com/v4/icons/search?query=${searchTerm}&count=1`;
-  const response = await fetch(apiUrl, {
+        async function getIcon(word) {
+  const response = await fetch(`https://api.iconfinder.com/v4/icons/search?query=${word}&count=1&premium=false&style=outline`, {
     headers: {
-      'Authorization': `Bearer ${apiKey}`,
-    },
+      'Authorization': 'Bearer E4v5LJtEiwo4o1m84XxHjCy3BSCDsUWHdFRr7FDIr3ExOBzYIBZqhMhMQO2TgAXK',
+    }
   });
   const data = await response.json();
-  if (data.icons.length > 0) {
-    const iconUrl = data.icons[0].raster_sizes[0].formats[0].preview_url;
-    return iconUrl;
-  }
-  return null;
+  return data.icons[0].raster_sizes[0].formats[0].preview_url;
 }
+
 
         
          form.addEventListener('submit', (event) => {
             entries++;
             if (userName.value != "" && messageInput.value != "") {
                 event.preventDefault();
+                
+                var itemIcon = getIcon(messageInput.value)
              
                 set(ref(db, "Einkaufsliste/" + userName.value + entries), {
                     Item: messageInput.value,
-                    Author: userName.value
+                    Author: userName.value,
+                    Image: itemIcon
                 })
                 .then(() => {
                     alert(messageInput.value + " erfolgreich zur Einkaufsliste hinzugefügt!")
