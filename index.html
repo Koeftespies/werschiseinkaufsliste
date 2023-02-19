@@ -124,6 +124,22 @@
         const messageInput = document.getElementById('message');
         const userName = document.getElementById("userName");
         var entries = 0;
+        
+        async function getIcon(searchTerm) {
+  const apiKey = 'E4v5LJtEiwo4o1m84XxHjCy3BSCDsUWHdFRr7FDIr3ExOBzYIBZqhMhMQO2TgAXK'; // replace with your actual API key
+  const apiUrl = `https://api.iconfinder.com/v4/icons/search?query=${searchTerm}&count=1`;
+  const response = await fetch(apiUrl, {
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+    },
+  });
+  const data = await response.json();
+  if (data.icons.length > 0) {
+    const iconUrl = data.icons[0].raster_sizes[0].formats[0].preview_url;
+    return iconUrl;
+  }
+  return null;
+}
 
         
          form.addEventListener('submit', (event) => {
